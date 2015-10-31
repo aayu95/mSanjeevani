@@ -15,4 +15,6 @@
     <string name="err_msg_ht">Enter your Height</string>
     <string name="title_activity_add_appointment">AddAppointment</string>
     <string name="title_activity_appointment_list">AppointmentList</string>
+    <string name="title_activity_sample_activity">sample_activity</string>
+    <string name="title_activity_sample_list">sample_list</string>
 </resources>

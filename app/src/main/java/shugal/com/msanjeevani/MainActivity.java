@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this, AppointmentsActivity.class));
         } else if (id == R.id.email) {
             startActivity(new Intent(this, emal_symptoms.class));
+        } else if (id == R.id.sample) {
+            startActivity(new Intent(this, sample_activity.class));
+        } else if (id == R.id.sampleList) {
+            startActivity(new Intent(this, sample_list.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

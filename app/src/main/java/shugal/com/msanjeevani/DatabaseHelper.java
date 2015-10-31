@@ -7,13 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by abhishek on 31/10/15.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-
-    private static DatabaseHelper sInstance;
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
@@ -24,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_DOCTORS = "doctors";
     private static final String TABLE_APPOINTMENTS = "appointments";
     private static final String TABLE_HOSPITALS = "hospitals";
+    private static final String TABLE_SAMPLE = "sample";
 
 
 
@@ -43,22 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_STATUS = "status";
 
 
-    // Hospital Database
-    //hospital name
-    private static final String KEY_ADDRESS = "date";
-    private static final String KEY_PHONE = "phone";
-
-    public static synchronized DatabaseHelper getInstance(Context context) {
-
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
-        if (sInstance == null) {
-            sInstance = new DatabaseHelper(context.getApplicationContext());
-        }
-        return sInstance;
-    }
-
+    //SAMPLE DATABASE
+    private static final String KEY_SAMPLE = "sample";
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -85,13 +71,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(query);
 
-        /*query = "create table if not exists " + TABLE_APPOINTMENTS + "(" +
+        query = "create table if not exists " + TABLE_SAMPLE + "(" +
                 KEY_ID + " integer primary key autoincrement, " +
-                KEY_HOSPITAL + " string, " +
-                KEY_ADDRESS + " string, " +
-                KEY_PHONE + " string);";
+                KEY_NAME + " string, " +
+                KEY_AGE + " int, " +
+                KEY_GENDER + " string, " +
+                KEY_SAMPLE + " string, " +
+                KEY_DATE + " string, " +
+                KEY_TIME + " string);";
 
-        db.execSQL(query);*/
+        db.execSQL(query);
 
     }
 
@@ -99,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + TABLE_APPOINTMENTS);
         db.execSQL("drop table if exists " + TABLE_DOCTORS);
-        db.execSQL("drop table if exists " + TABLE_HOSPITALS);
+        db.execSQL("drop table if exists " + TABLE_SAMPLE);
         onCreate(db);
         db.close();
     }
@@ -196,12 +185,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.delete(TABLE_APPOINTMENTS, KEY_ID + " = ?",
                 new String[]{String.valueOf(1)});
-
-       /* db.delete(TABLE_DOCTORS, KEY_ID + " = ?",
+        db.delete(TABLE_SAMPLE, KEY_ID + " = ?",
                 new String[]{String.valueOf(1)});
-
-        db.delete(TABLE_HOSPITALS, KEY_ID + " = ?",
-                new String[]{String.valueOf(1)});*/
         db.close();
+    }
+
+    public void addSample(SampleData data) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, data.getPatient_name());
+        values.put(KEY_AGE, data.getAge());
+        values.put(KEY_GENDER, data.getGender());
+        values.put(KEY_SAMPLE, data.getSample());
+        values.put(KEY_DATE, data.getDate());
+        values.put(KEY_TIME, data.getTime());
+        db.insert(TABLE_SAMPLE, null, values);
+
+        db.close();
+    }
+
+    public boolean isSampleListEmpty() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String count = "SELECT count(*) FROM " + TABLE_SAMPLE;
+        Cursor mcursor = db.rawQuery(count, null);
+        mcursor.moveToFirst();
+        int icount = mcursor.getInt(0);
+
+        if (icount > 0) {
+            db.close();
+            return false;
+        } else {
+            db.close();
+            return true;
+        }
+    }
+
+    public ArrayList<SampleData> showSamples() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<SampleData> tdata = new ArrayList<>();
+        String query = "Select * from " + TABLE_SAMPLE + " order by id desc";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                SampleData data = new SampleData();
+                data.setId(Integer.parseInt(cursor.getString(0)));
+                data.setPatient_name(cursor.getString(1));
+                data.setAge(Integer.parseInt(cursor.getString(2)));
+                data.setGender(cursor.getString(3));
+                data.setSample(cursor.getString(4));
+                data.setDate(cursor.getString(5));
+                data.setTime(cursor.getString(6));
+                tdata.add(data);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return tdata;
     }
 }

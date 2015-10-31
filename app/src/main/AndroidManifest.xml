@@ -36,8 +36,8 @@
         </activity>
         <activity
             android:name=".emal_symptoms"
-            android:parentActivityName=".MainActivity"
             android:label="Share Symptoms With Doctor"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
@@ -68,12 +68,22 @@
             android:parentActivityName=".AppointmentsActivity"
             android:theme="@style/AppTheme" >
         </activity>
-
-
         <activity
             android:name=".AddAppointment"
-            android:parentActivityName=".AppointmentsActivity"
             android:label="@string/title_activity_appointment_list"
+            android:parentActivityName=".AppointmentsActivity"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".sample_activity"
+            android:label="@string/title_activity_sample_activity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".sample_list"
+            android:label="@string/title_activity_sample_list"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" >
         </activity>
     </application>

@@ -13,6 +13,16 @@
             android:icon="@android:drawable/ic_menu_camera"
             android:title="Share Symptoms With Doctor" />
 
+        <item
+            android:id="@+id/sample"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="Request Sample" />
+
+        <item
+            android:id="@+id/sampleList"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="List of Samples" />
+
 
     </group>
 

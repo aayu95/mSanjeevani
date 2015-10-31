@@ -75,6 +75,8 @@ public class Splashscreen extends AppCompatActivity {
 
         AppointmentData data = new AppointmentData("kk", 9, "k", "k", "k", "k", "k");
         db.addAppointment(data);
+        SampleData data1 = new SampleData("kk", 9, "k", "k", "k", "k");
+        db.addSample(data1);
         db.deleteFirstValues();
 
 
